@@ -6,9 +6,9 @@ import { bindCallback } from 'rxjs/observable/bindCallback';
 
 @Injectable()
 export class EventPageService {
-  currentTab: chrome.tabs.Tab;
+
   getSelectedTab: Observable<chrome.tabs.Tab[]>;
-  onMessage$: () => Observable<{ request; sender; response }>;
+
   constructor() {
     this.initBrowserAction();
   }

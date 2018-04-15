@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import { bindCallback } from 'rxjs/observable/bindCallback';
 import { mergeMap } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-background',
@@ -24,8 +24,16 @@ export class BackgroundComponent implements OnInit {
     });
   }
 
-  checkPageActionState(name, obj) {
-    const tabId = typeof obj === 'number' ? obj : obj.tabId;
-    this.tabId$.next(tabId);
+  checkPageActionState(name, obj, ...rest) {
+    switch (name) {
+      case 'updated':
+        if (rest[0] && 'status' in rest[0] && rest[0].status === 'complete') {
+          this.tabId$.next(obj);
+        }
+        break;
+      case 'activated':
+        this.tabId$.next(obj.tabId);
+        break;
+    }
   }
 }
