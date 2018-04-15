@@ -7,8 +7,15 @@
     "default_icon": "assets/network.png",
     "default_popup": "index.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["*://www.netflix.com/*"],
+      "js": ["assets/js/content-script.js"],
+      "run_at": "document_end"
+    }
+  ],
   "author": "Kevin",
-  "permissions": [],
-  "content_security_policy": "script-src ‘self’ ‘unsafe-eval’; object-src ‘self’",
+  "permissions": ["activeTab"],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "web_accessible_resources": ["assets/css/*", "assets/js/*", "assets/fonts/*"]
 }
