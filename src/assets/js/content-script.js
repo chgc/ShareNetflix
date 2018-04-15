@@ -10,7 +10,7 @@ function injectScript(file_path, tag) {
   };
   node.appendChild(script);
 }
-injectScript(chrome.extension.getURL('assets/js/webpaget.js'), 'body');
+injectScript(chrome.extension.getURL('assets/js/webpage.js'), 'body');
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'GET_RESULT') {
@@ -22,7 +22,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 window.addEventListener(
   'message',
-  function receiveDuck(event) {
+  event => {
     if (event.data.action === 'GOT_RESULT') {
       // Remove this listener, but you can keep it depend on your case
       // window.removeEventListener('message', receiveDuck, false);

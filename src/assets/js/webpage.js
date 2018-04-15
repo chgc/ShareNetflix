@@ -1,7 +1,7 @@
 console.log('webpagejs loaded');
 window.addEventListener(
   'GET_RESULT',
-  function getDuckInPage(event) {
+  event => {
     function getTitleInfo(netflix, titleid) {
       let result = {};
       const titleVideo = netflix.falkorCache['videos'][titleid];
