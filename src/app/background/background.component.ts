@@ -24,7 +24,7 @@ export class BackgroundComponent implements OnInit {
     });
   }
 
-  checkPageActionState(name, obj, ...rest) {
+  private checkPageActionState(name, obj, ...rest) {
     switch (name) {
       case 'updated':
         if (rest[0] && 'status' in rest[0] && rest[0].status === 'complete') {
