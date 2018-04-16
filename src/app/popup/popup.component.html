@@ -1,11 +1,31 @@
-<h1>測試</h1>
-<h2>目前影片</h2>
-<p>
-  ID: {{ video?.id }}
-</p>
-<p>
-  片名: {{ video?.title }}
-</p>
-<p>
-  簡介: {{ video?.summary}}
-</p>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>{{ video?.title }}</span>
+    <span>({{ video?.releaseYear }})</span>
+    <span class="fill-space"></span>
+    <span>#{{ video?.id }}</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-card class="example-card">
+  <img mat-card-image [src]="video?.bgImages" [alt]="video?.title">
+  <mat-card-content>
+    <h5 *ngIf="video?.runtime ==0">
+      {{ video?.numSeasonsLabel }} - {{ video?.episode }} 集
+    </h5>
+    <h5 *ngIf="video?.runtime > 0">
+      {{ video?.runtime | time }}
+    </h5>
+    <p>
+      {{ video?.summary}}
+    </p>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <textarea name="comment" matInput placeholder="心得" rows="3" [(ngModel)]="comment"></textarea>
+      </mat-form-field>
+    </form>
+
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" (click)="share()">分享</button>
+  </mat-card-actions>
+</mat-card>
