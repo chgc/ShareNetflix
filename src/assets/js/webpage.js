@@ -5,11 +5,24 @@ window.addEventListener(
     function getTitleInfo(netflix, titleid) {
       let result = {};
       const titleVideo = netflix.falkorCache['videos'][titleid];
+      let bgImages = '',
+        session = titleVideo['seasonCount'].value || 0,
+        episode = titleVideo['episodeCount'].value || 0,
+        runtime = titleVideo['runtime'].value || 0,
+        releaseYear = titleVideo['releaseYear'].value || 0;
+      if (titleVideo['BGImages'][480]['webp']) {
+        bgImages = titleVideo['BGImages'][480]['webp'][0].url || '';
+      }
       if (titleVideo && titleVideo.title) {
         result = {
           id: titleid,
           title: titleVideo.title.value,
-          summary: titleVideo.regularSynopsis.value
+          summary: titleVideo.regularSynopsis.value,
+          session: session,
+          episode: episode,
+          runtime: runtime,
+          releaseYear: releaseYear,
+          bgImages: bgImages
         };
       }
       return result;

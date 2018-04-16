@@ -1,11 +1,22 @@
-<h1>測試</h1>
-<h2>目前影片</h2>
-<p>
-  ID: {{ video?.id }}
-</p>
-<p>
-  片名: {{ video?.title }}
-</p>
-<p>
-  簡介: {{ video?.summary}}
-</p>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>目前影片</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>{{ video?.title }}(#{{ video?.id }})</mat-card-title>
+    <mat-card-subtitle>
+      ({{video?.releaseYear}}) 共 {{ video?.session }} 季 {{ video?.episode }} 集
+    </mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="video?.bgImages" [alt]="video?.title">
+  <mat-card-content>
+    <p>
+      {{ video?.summary}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary">分享</button>
+  </mat-card-actions>
+</mat-card>

@@ -2,7 +2,12 @@ import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { EventPageService } from '../event-page.service';
 
 const mockData = {
+  bgImages: 'https://occ-0-1077-2219.1.nflxso.net/art/85c06/94902a1fbfac64496b110ce690fab014e8185c06.webp',
+  episode: 11,
   id: '80178687',
+  releaseYear: 2018,
+  runtime: 0,
+  session: 1,
   summary: '家人遭到一幫歹徒威脅後，學校校長兼收山的超級英雄傑弗森·皮爾斯再次迅速行動，化身為傳奇人物黑閃電。',
   title: '黑閃電'
 };
