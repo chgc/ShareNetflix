@@ -8,10 +8,11 @@ import { AppComponent } from './app.component';
 import { BackgroundComponent } from './background/background.component';
 import { EventPageService } from './event-page.service';
 import { PopupComponent } from './popup/popup.component';
-import { MaterialModule } from './material/material.module';
+import { MaterialModule } from './material.module';
+import { TimePipe } from './time.pipe';
 
 @NgModule({
-  declarations: [AppComponent, BackgroundComponent, PopupComponent],
+  declarations: [AppComponent, BackgroundComponent, PopupComponent, TimePipe],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

@@ -1,13 +1,20 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>目前影片</span>
+    <span>ShareNetflix</span>
+    <span class="fill-space"></span>
+    <span>#{{ video?.id }}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 <mat-card class="example-card">
   <mat-card-header>
-    <mat-card-title>{{ video?.title }}(#{{ video?.id }})</mat-card-title>
-    <mat-card-subtitle>
-      ({{video?.releaseYear}}) 共 {{ video?.session }} 季 {{ video?.episode }} 集
+    <mat-card-title>
+      <h1>{{ video?.title }}</h1>
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="video?.runtime ==0">
+      ({{video?.releaseYear}}) {{ video?.numSeasonsLabel }} - {{ video?.episode }} 集
+    </mat-card-subtitle>
+    <mat-card-subtitle *ngIf="video?.runtime > 0">
+      ({{video?.releaseYear}}) {{ video?.runtime | time }}
     </mat-card-subtitle>
   </mat-card-header>
   <img mat-card-image [src]="video?.bgImages" [alt]="video?.title">
@@ -15,6 +22,12 @@
     <p>
       {{ video?.summary}}
     </p>
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="心得" rows="3"></textarea>
+      </mat-form-field>
+    </form>
+
   </mat-card-content>
   <mat-card-actions align="end">
     <button mat-raised-button color="primary">分享</button>

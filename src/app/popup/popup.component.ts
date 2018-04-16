@@ -8,6 +8,7 @@ const mockData = {
   releaseYear: 2018,
   runtime: 0,
   session: 1,
+  numSeasonsLabel: '1 季',
   summary: '家人遭到一幫歹徒威脅後，學校校長兼收山的超級英雄傑弗森·皮爾斯再次迅速行動，化身為傳奇人物黑閃電。',
   title: '黑閃電'
 };

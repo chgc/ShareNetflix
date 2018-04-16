@@ -7,6 +7,7 @@ window.addEventListener(
       const titleVideo = netflix.falkorCache['videos'][titleid];
       let bgImages = '',
         session = titleVideo['seasonCount'].value || 0,
+        numSeasonsLabel = titleVideo['numSeasonsLabel'].value || '',
         episode = titleVideo['episodeCount'].value || 0,
         runtime = titleVideo['runtime'].value || 0,
         releaseYear = titleVideo['releaseYear'].value || 0;
@@ -19,6 +20,7 @@ window.addEventListener(
           title: titleVideo.title.value,
           summary: titleVideo.regularSynopsis.value,
           session: session,
+          numSeasonsLabel: numSeasonsLabel,
           episode: episode,
           runtime: runtime,
           releaseYear: releaseYear,
