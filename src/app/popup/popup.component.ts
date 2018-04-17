@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Comment } from '@models/comment';
+import { ShareDetails } from '@models/shareDetails';
 import { Video } from '@models/video';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AuthService } from '../auth.service';
@@ -27,7 +27,7 @@ export class PopupComponent implements OnInit {
   comment = '';
   uid;
   private itemsCollection: AngularFirestoreCollection<Video>;
-  private commentsCollection: AngularFirestoreCollection<Comment>;
+  private detailsCollection: AngularFirestoreCollection<ShareDetails>;
 
   constructor(
     private eventPageService: EventPageService,
@@ -36,7 +36,8 @@ export class PopupComponent implements OnInit {
     private authService: AuthService
   ) {
     this.itemsCollection = this.db.collection<Video>('lists');
-    this.commentsCollection = this.db.collection<Comment>('comments');
+    this.detailsCollection = this.db.collection<ShareDetails>('details');
+
     this.authService.authState.subscribe(user => {
       this.uid = user.uid;
     });
@@ -53,15 +54,28 @@ export class PopupComponent implements OnInit {
 
   share() {
     const postData = { ...this.video, updateDate: new Date() };
+
+    // 分享影片資訊
     this.itemsCollection.doc(postData.id).set(postData, { merge: true });
-    const commentDocument = this.commentsCollection
+
+    // 分享影片心得
+    if (this.comment.trim().length > 0) {
+      this.detailsCollection
+        .doc(postData.id)
+        .collection('comments')
+        .doc(this.uid)
+        .set({ comment: this.comment, updateDate: new Date() }, { merge: true })
+        .then(() => {
+          this.comment = '';
+        });
+    }
+
+    // 分享時間記錄
+    this.detailsCollection
       .doc(postData.id)
-      .collection('comments')
+      .collection('shared')
       .doc(this.uid)
-      .set({ comment: this.comment, updateDate: new Date() }, { merge: true })
-      .then(() => {
-        this.comment = '';
-      });
+      .set({ updateDate: new Date() }, { merge: true });
   }
 
   private addListner() {
