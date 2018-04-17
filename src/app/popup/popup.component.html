@@ -26,7 +26,6 @@
 
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="singout()">登出</button>
-    <button mat-raised-button color="primary" (click)="share()">分享</button>
+    <button mat-raised-button color="primary" (click)="share()" [disabled]="!video.id">{{ shareDisplay }}</button>
   </mat-card-actions>
 </mat-card>

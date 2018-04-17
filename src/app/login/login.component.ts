@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
 import { AuthService } from '../auth.service';
 @Component({
@@ -6,13 +6,9 @@ import { AuthService } from '../auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   constructor(private matIconRegistry: MatIconRegistry, private authService: AuthService) {
     this.matIconRegistry.registerFontClassAlias('fontawesome', 'fa');
-  }
-
-  ngOnInit() {
-    console.log(this.authService.authState);
   }
 
   signIn(way) {

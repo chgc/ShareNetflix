@@ -1,7 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ShareDetails } from '@models/shareDetails';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Comment, ShareDetails, Shared } from '@models/shareDetails';
 import { Video } from '@models/video';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Subject } from 'rxjs/Subject';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { map, takeUntil } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { AuthService } from '../auth.service';
 import { EventPageService } from '../event-page.service';
 
@@ -14,7 +18,7 @@ const mockData = {
   episode: 11,
   session: 1,
   numSeasonsLabel: '1 季',
-  runtime: 8100
+  runtime: 0
 };
 
 @Component({
@@ -22,12 +26,15 @@ const mockData = {
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PopupComponent implements OnInit {
+export class PopupComponent implements OnInit, OnDestroy {
   video = mockData;
   comment = '';
   uid;
-  private itemsCollection: AngularFirestoreCollection<Video>;
-  private detailsCollection: AngularFirestoreCollection<ShareDetails>;
+  shareDisplay;
+  isShared: boolean;
+  destroy$ = new Subject();
+
+  private videoDetailDocument: AngularFirestoreDocument<ShareDetails>;
 
   constructor(
     private eventPageService: EventPageService,
@@ -35,9 +42,6 @@ export class PopupComponent implements OnInit {
     private db: AngularFirestore,
     private authService: AuthService
   ) {
-    this.itemsCollection = this.db.collection<Video>('videos');
-    this.detailsCollection = this.db.collection<ShareDetails>('videoDetails');
-
     this.authService.authState.subscribe(user => {
       this.uid = user.uid;
     });
@@ -46,36 +50,60 @@ export class PopupComponent implements OnInit {
   ngOnInit() {
     this.addListner();
     this.requestVideoInfo();
-  }
 
-  singout() {
-    this.authService.signOut();
+    if (!environment.production) {
+      this.initFirebaseDocument();
+    }
   }
 
   share() {
     const postData = { ...this.video, updateDate: new Date() };
 
-    // 分享影片資訊
-    this.itemsCollection.doc(postData.id).set(postData, { merge: true });
+    if (!this.isShared) {
+      // 分享影片資訊
+      this.db.doc<Video>(`videos/${this.video.id}`).set(postData, { merge: true });
+      // 分享時間記錄
+      this.videoDetailDocument
+        .collection('shareBy')
+        .doc(this.uid)
+        .set({ uid: this.uid, updateDate: new Date() });
+    }
 
     // 分享影片心得
     if (this.comment.trim().length > 0) {
-      this.detailsCollection
-        .doc(postData.id)
+      this.videoDetailDocument
         .collection('comments')
         .doc(this.uid)
-        .set({ comment: this.comment, updateDate: new Date() }, { merge: true })
-        .then(() => {
-          this.comment = '';
-        });
+        .set({ comment: this.comment, updateDate: new Date() }, { merge: true });
     }
+  }
 
-    // 分享時間記錄
-    this.detailsCollection
-      .doc(postData.id)
-      .collection('shareBy')
-      .doc(this.uid)
-      .set({ updateDate: new Date() }, { merge: true });
+  private initFirebaseDocument() {
+    this.videoDetailDocument = this.db.doc<ShareDetails>(`videoDetails/${this.video.id}`);
+
+    combineLatest(
+      this.videoDetailDocument.collection('shareBy', ref => ref.where('uid', '==', this.uid)).valueChanges(),
+      this.videoDetailDocument
+        .collection('comments')
+        .doc(this.uid)
+        .valueChanges()
+    )
+      .pipe(
+        takeUntil(this.destroy$),
+        map((ds: [Shared[], Comment]) => {
+          return { shared: ds[0].length > 0, comment: ds[1].comment || '' };
+        })
+      )
+      .subscribe(({ shared, comment }) => {
+        this.shareDisplay = shared ? '更新' : '推薦';
+        this.comment = comment;
+        this.cd.detectChanges();
+      });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private addListner() {
@@ -84,6 +112,7 @@ export class PopupComponent implements OnInit {
         if (message.action === 'GOT_RESULT') {
           this.video = message.payload;
           this.cd.detectChanges();
+          this.initFirebaseDocument();
         }
       });
     }

@@ -4,7 +4,7 @@ export interface ShareDetails {
 }
 export interface Comment {
   updateDate: Date;
-  comment: string[];
+  comment: string;
 }
 
 export interface Shared {
