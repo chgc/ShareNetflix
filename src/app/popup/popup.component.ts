@@ -25,6 +25,7 @@ const mockData = {
 export class PopupComponent implements OnInit {
   video = mockData;
   comment = '';
+  uid;
   private itemsCollection: AngularFirestoreCollection<Video>;
   private commentsCollection: AngularFirestoreCollection<Comment>;
 
@@ -36,7 +37,9 @@ export class PopupComponent implements OnInit {
   ) {
     this.itemsCollection = this.db.collection<Video>('lists');
     this.commentsCollection = this.db.collection<Comment>('comments');
-    this.authService.authState.subscribe(user => console.log(user));
+    this.authService.authState.subscribe(user => {
+      this.uid = user.uid;
+    });
   }
 
   ngOnInit() {
@@ -51,10 +54,11 @@ export class PopupComponent implements OnInit {
   share() {
     const postData = { ...this.video, updateDate: new Date() };
     this.itemsCollection.doc(postData.id).set(postData, { merge: true });
-    this.commentsCollection
+    const commentDocument = this.commentsCollection
       .doc(postData.id)
       .collection('comments')
-      .add({ id: this.db.createId(), comment: this.comment })
+      .doc(this.uid)
+      .set({ comment: this.comment, updateDate: new Date() }, { merge: true })
       .then(() => {
         this.comment = '';
       });
