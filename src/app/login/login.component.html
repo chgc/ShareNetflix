@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>登入 ShareNetflix</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-list>
+  <mat-list-item>
+    <button mat-icon-button (click)="signIn('google')" color="accent">
+      <mat-icon class="fa fa-2x fa-google"> | Google</mat-icon>
+    </button>
+  </mat-list-item>
+  <mat-list-item>
+    <button mat-icon-button (click)="signIn('github')">
+      <mat-icon class="fa fa-2x fa-github"> | GitHub</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>
