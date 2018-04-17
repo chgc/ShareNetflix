@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { EventPageService } from '../event-page.service';
-import { Observable } from 'rxjs/Observable';
-import { Video } from '@models/video';
 import { Comment } from '@models/comment';
+import { Video } from '@models/video';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AuthService } from '../auth.service';
+import { EventPageService } from '../event-page.service';
 
 const mockData = {
   id: '80178687',
@@ -28,14 +28,24 @@ export class PopupComponent implements OnInit {
   private itemsCollection: AngularFirestoreCollection<Video>;
   private commentsCollection: AngularFirestoreCollection<Comment>;
 
-  constructor(private eventPageService: EventPageService, private cd: ChangeDetectorRef, private db: AngularFirestore) {
+  constructor(
+    private eventPageService: EventPageService,
+    private cd: ChangeDetectorRef,
+    private db: AngularFirestore,
+    private authService: AuthService
+  ) {
     this.itemsCollection = this.db.collection<Video>('lists');
     this.commentsCollection = this.db.collection<Comment>('comments');
+    this.authService.authState.subscribe(user => console.log(user));
   }
 
   ngOnInit() {
     this.addListner();
     this.requestVideoInfo();
+  }
+
+  singout() {
+    this.authService.signOut();
   }
 
   share() {
