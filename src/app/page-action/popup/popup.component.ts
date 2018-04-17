@@ -5,8 +5,8 @@ import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firesto
 import { Subject } from 'rxjs/Subject';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, takeUntil } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { AuthService } from '../auth.service';
+import { environment } from '@environment';
+import { AuthService } from '@app/core/auth.service';
 import { EventPageService } from '../event-page.service';
 
 const mockData = {

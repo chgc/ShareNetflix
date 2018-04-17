@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatIconRegistry } from '@angular/material';
-import { AuthService } from '../auth.service';
+import { AuthService } from '@app/core/auth.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

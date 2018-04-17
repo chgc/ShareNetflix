@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BackgroundComponent } from './background/background.component';
-import { PopupComponent } from './popup/popup.component';
-import { LoginComponent } from './login/login.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from '@app/core/auth.guard';
+import { PopupComponent } from './page-action/popup/popup.component';
+import { LoginComponent } from './page-action/login/login.component';
 
 const routes: Routes = [
   { path: 'background', component: BackgroundComponent },
