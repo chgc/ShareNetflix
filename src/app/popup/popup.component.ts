@@ -35,8 +35,8 @@ export class PopupComponent implements OnInit {
     private db: AngularFirestore,
     private authService: AuthService
   ) {
-    this.itemsCollection = this.db.collection<Video>('lists');
-    this.detailsCollection = this.db.collection<ShareDetails>('details');
+    this.itemsCollection = this.db.collection<Video>('videos');
+    this.detailsCollection = this.db.collection<ShareDetails>('videoDetails');
 
     this.authService.authState.subscribe(user => {
       this.uid = user.uid;
@@ -73,7 +73,7 @@ export class PopupComponent implements OnInit {
     // 分享時間記錄
     this.detailsCollection
       .doc(postData.id)
-      .collection('shared')
+      .collection('shareBy')
       .doc(this.uid)
       .set({ updateDate: new Date() }, { merge: true });
   }
