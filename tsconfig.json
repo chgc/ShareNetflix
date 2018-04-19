@@ -12,8 +12,10 @@
     "lib": ["es2017", "dom"],
     "baseUrl": "src",
     "paths": {
-      "@models/*": ["app/page-action/models/*"],
-      "@app/*": ["app/*"],
+      "@models/*": ["projects/extensions/page-action/models/*"],
+      "@libs/*": ["libs/*"],
+      "@app/*": ["projects/extensions/*"],
+      "@sites/*": ["projects/sites/*"],
       "@environment": ["environments/environment"]
     }
   }
