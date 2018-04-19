@@ -5,8 +5,7 @@ import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-background',
-  templateUrl: './background.component.html',
-  styleUrls: ['./background.component.scss']
+  template: ''
 })
 export class BackgroundComponent implements OnInit {
   getTab$ = bindCallback(chrome.tabs.get);
