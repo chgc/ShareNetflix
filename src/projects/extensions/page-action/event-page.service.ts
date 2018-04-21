@@ -1,7 +1,6 @@
 /// <reference types="chrome/chrome-app"/>
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { bindCallback } from 'rxjs/observable/bindCallback';
+import { Observable, bindCallback } from 'rxjs';
 
 @Injectable()
 export class EventPageService {
@@ -13,7 +12,7 @@ export class EventPageService {
 
   initBrowserAction() {
     if (typeof chrome.tabs !== 'undefined') {
-      this.queryTabs = bindCallback<chrome.tabs.Tab[]>(chrome.tabs.query)({ active: true });
+      this.queryTabs = bindCallback(chrome.tabs.query)({ active: true });
     }
   }
 }
