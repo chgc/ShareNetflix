@@ -13,7 +13,7 @@ export class EventPageService {
 
   initBrowserAction() {
     if (typeof chrome.tabs !== 'undefined') {
-      this.queryTabs = bindCallback<chrome.tabs.Tab[]>(chrome.tabs.query)({ active: true });
+      this.queryTabs = bindCallback(chrome.tabs.query)({ active: true });
     }
   }
 }

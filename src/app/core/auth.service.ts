@@ -9,19 +9,21 @@ export class AuthService {
   authState = this.afAuth.authState;
   constructor(public afAuth: AngularFireAuth, private router: Router) {}
 
-  signInWithGoole() {
-    return this.afAuth.auth
-      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(() => this.router.navigate(['/popup']));
+  signInAnonymously() {
+    return this.afAuth.auth.signInAnonymously().then(this.redirectToPopup());
+  }
+  signInWithGoogle() {
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(this.redirectToPopup());
   }
 
   signInWithGithub() {
-    return this.afAuth.auth
-      .signInWithPopup(new firebase.auth.GithubAuthProvider())
-      .then(() => this.router.navigate(['/popup']));
+    return this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider()).then(this.redirectToPopup());
   }
 
   signOut() {
     this.afAuth.auth.signOut();
+  }
+  private redirectToPopup() {
+    return () => this.router.navigate(['/popup']);
   }
 }
