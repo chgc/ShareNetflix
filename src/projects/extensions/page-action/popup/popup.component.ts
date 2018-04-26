@@ -47,7 +47,7 @@ export class PopupComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.addListner();
+    this.addListener();
     this.requestVideoInfo();
 
     if (!environment.production) {
@@ -106,7 +106,7 @@ export class PopupComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private addListner() {
+  private addListener() {
     if (typeof chrome.runtime.onMessage !== 'undefined') {
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (message.action === 'GOT_RESULT') {

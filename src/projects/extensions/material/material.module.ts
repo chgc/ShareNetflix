@@ -7,7 +7,8 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatListModule,
-  MatIconModule
+  MatIconModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
@@ -20,7 +21,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatInputModule,
     MatListModule,
     MatIconModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialModule {}
