@@ -2,21 +2,25 @@ console.log('webpagejs loaded');
 window.addEventListener(
   'GET_RESULT',
   event => {
-    function getTitleInfo(netflix, titleid) {
+    function getTitleInfo(netflix, titleId) {
       let result = {};
-      const titleVideo = netflix.falkorCache['videos'][titleid];
+      const titleVideo = netflix.falkorCache['videos'][titleId];
       let bgImages = '',
         session = titleVideo['seasonCount'].value || 0,
         numSeasonsLabel = titleVideo['numSeasonsLabel'].value || '',
         episode = titleVideo['episodeCount'].value || 0,
         runtime = titleVideo['runtime'].value || 0,
-        releaseYear = titleVideo['releaseYear'].value || 0;
+        releaseYear = titleVideo['releaseYear'].value || 0,
+        genres = [];
       if (titleVideo['BGImages'][480]['webp']) {
         bgImages = titleVideo['BGImages'][480]['webp'][0].url || '';
       }
+      for (let i = 0; i < titleVideo['genres'].size.value; ++i) {
+        genres.push(+titleVideo['genres'][i][1])
+      }
       if (titleVideo && titleVideo.title) {
         result = {
-          id: titleid,
+          id: titleId,
           title: titleVideo.title.value,
           summary: titleVideo.regularSynopsis.value,
           session: session,
@@ -24,7 +28,8 @@ window.addEventListener(
           episode: episode,
           runtime: runtime,
           releaseYear: releaseYear,
-          bgImages: bgImages
+          bgImages: bgImages,
+          genres: genres
         };
       }
       return result;
