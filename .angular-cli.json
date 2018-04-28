@@ -9,7 +9,11 @@
       "root": "src",
       "outDir": "dist/extension",
       "assets": [
-        { "glob": "**/*", "input": "projects/extensions/assets", "output": "./assets/" },
+        {
+          "glob": "**/*",
+          "input": "app/extensions/assets",
+          "output": "./assets/"
+        },
         "favicon.ico",
         "manifest.json"
       ],
@@ -20,7 +24,9 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-      "styles": ["projects/extensions/assets/css/styles.scss"],
+      "styles": [
+        "app/extensions/assets/css/styles.scss"
+      ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
@@ -32,7 +38,14 @@
       "name": "sites",
       "root": "src",
       "outDir": "dist/sites",
-      "assets": [{ "glob": "**/*", "input": "projects/sites/assets", "output": "./assets/" }, "favicon.ico"],
+      "assets": [
+        {
+          "glob": "**/*",
+          "input": "app/sites/assets",
+          "output": "./assets/"
+        },
+        "favicon.ico"
+      ],
       "index": "index.html",
       "main": "main-sites.ts",
       "polyfills": "polyfills.ts",
@@ -40,7 +53,9 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-      "styles": ["projects/sites/assets/css/styles.scss"],
+      "styles": [
+        "app/sites/assets/css/styles.scss"
+      ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {

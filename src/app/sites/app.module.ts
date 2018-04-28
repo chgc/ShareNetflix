@@ -8,9 +8,11 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SharedModule } from '@libs/shared/shared.module';
+import { VideoCardComponent } from './video-card/video-card.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, VideoCardComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -18,7 +20,8 @@ import { AppComponent } from './app.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     AppRoutingModule,
-    CoreModule
+    CoreModule,
+    SharedModule
   ],
   bootstrap: [AppComponent]
 })

@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { EventPageService } from './event-page.service';
 import { LoginComponent } from './login/login.component';
 import { PopupComponent } from './popup/popup.component';
-import { TimePipe } from './time.pipe';
 import { MaterialModule } from '@app/material/material.module';
+import { SharedModule } from '@libs/shared/shared.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, MaterialModule],
-  declarations: [PopupComponent, TimePipe, LoginComponent],
+  imports: [CommonModule, FormsModule, MaterialModule, SharedModule],
+  declarations: [PopupComponent, LoginComponent],
   providers: [EventPageService],
-  exports: [PopupComponent, TimePipe, LoginComponent]
+  exports: [PopupComponent, LoginComponent]
 })
 export class PageActionModule {}
