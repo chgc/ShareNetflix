@@ -1,7 +1,6 @@
 /// <reference types="chrome/chrome-app"/>
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { bindCallback } from 'rxjs/observable/bindCallback';
+import { Observable, bindCallback } from 'rxjs';
 
 @Injectable()
 export class EventPageService {

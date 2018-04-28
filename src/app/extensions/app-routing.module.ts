@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BackgroundComponent } from './background/background.component';
-import { AuthGuard } from '@app/core/auth.guard';
+import { AuthGuard } from '@libs/core/auth.guard';
 import { PopupComponent } from './page-action/popup/popup.component';
 import { LoginComponent } from './page-action/login/login.component';
 

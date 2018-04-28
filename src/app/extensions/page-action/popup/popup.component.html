@@ -1,0 +1,35 @@
+<div *ngIf="video; else loading">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>{{ video?.title }}</span>
+      <span>({{ video?.releaseYear }})</span>
+      <span class="fill-space"></span>
+      <span>#{{ video?.id }}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <mat-card class="example-card">
+    <img mat-card-image [src]="video?.bgImages" [alt]="video?.title">
+    <mat-card-content>
+      <h5 *ngIf="video?.runtime ==0">
+        {{ video?.numSeasonsLabel }} - {{ video?.episode }} 集
+      </h5>
+      <h5 *ngIf="video?.runtime > 0">
+        {{ video?.runtime | time }}
+      </h5>
+      <p>
+        {{ video?.summary}}
+      </p>
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <textarea name="comment" matInput placeholder="心得" rows="3" [(ngModel)]="comment"></textarea>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="share()">{{ shareDisplay }}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<ng-template #loading>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

@@ -2,11 +2,10 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Comment, ShareDetails, Shared } from '@models/shareDetails';
 import { Video } from '@models/video';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Subject } from 'rxjs/Subject';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subject ,  combineLatest } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { environment } from '@environment';
-import { AuthService } from '@app/core/auth.service';
+import { AuthService } from '@libs/core/auth.service';
 import { EventPageService } from '../event-page.service';
 
 const mockData = {
@@ -27,10 +26,10 @@ const mockData = {
   styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent implements OnInit, OnDestroy {
-  video = mockData;
+  video;
   comment = '';
   uid;
-  shareDisplay;
+  shareDisplay = '推薦';
   isShared: boolean;
   destroy$ = new Subject();
 
@@ -52,7 +51,7 @@ export class PopupComponent implements OnInit, OnDestroy {
     this.requestVideoInfo();
 
     if (!environment.production) {
-      this.initFirebaseDocument();
+      this.initFirebaseDocument(mockData);
     }
   }
 
@@ -78,8 +77,8 @@ export class PopupComponent implements OnInit, OnDestroy {
     }
   }
 
-  private initFirebaseDocument() {
-    this.videoDetailDocument = this.db.doc<ShareDetails>(`videoDetails/${this.video.id}`);
+  private initFirebaseDocument(video) {
+    this.videoDetailDocument = this.db.doc<ShareDetails>(`videoDetails/${video.id}`);
 
     combineLatest(
       this.videoDetailDocument.collection('shareBy', ref => ref.where('uid', '==', this.uid)).valueChanges(),
@@ -91,12 +90,13 @@ export class PopupComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((ds: [Shared[], Comment]) => {
-          return { shared: ds[0].length > 0, comment: ds[1].comment || '' };
+          return { shared: ds[0].length > 0, comment: (ds[1] && ds[1].comment) || '' };
         })
       )
       .subscribe(({ shared, comment }) => {
-        this.shareDisplay = shared ? '更新' : '推薦';
+        this.video = video;
         this.comment = comment;
+        this.shareDisplay = shared ? '更新' : '推薦';
         this.cd.detectChanges();
       });
   }
@@ -110,9 +110,7 @@ export class PopupComponent implements OnInit, OnDestroy {
     if (typeof chrome.runtime.onMessage !== 'undefined') {
       chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         if (message.action === 'GOT_RESULT') {
-          this.video = message.payload;
-          this.cd.detectChanges();
-          this.initFirebaseDocument();
+          this.initFirebaseDocument(message.payload);
         }
       });
     }

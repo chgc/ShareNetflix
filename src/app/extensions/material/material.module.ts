@@ -10,7 +10,7 @@ import {
   MatIconModule,
   MatProgressSpinnerModule
 } from '@angular/material';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
   exports: [
     MatButtonModule,
@@ -21,6 +21,7 @@ import {
     MatInputModule,
     MatListModule,
     MatIconModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule
   ]
 })

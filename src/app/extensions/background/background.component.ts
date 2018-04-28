@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { bindCallback } from 'rxjs/observable/bindCallback';
+import { Subject ,  bindCallback } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 @Component({
