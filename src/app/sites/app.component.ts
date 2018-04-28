@@ -18,13 +18,6 @@ export class AppComponent {
     this.videos$ = this.videoCollections.valueChanges();
   }
 
-  goto(id) {
-    if (!id) {
-      return;
-    }
-    window.open(`https://www.netflix.com/title/${id}`);
-  }
-
   trackByFn(index, item: Video) {
     return item.id;
   }
