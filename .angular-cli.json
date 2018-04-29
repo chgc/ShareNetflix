@@ -24,9 +24,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-      "styles": [
-        "app/extensions/assets/css/styles.scss"
-      ],
+      "styles": ["app/extensions/assets/css/styles.scss"],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
@@ -53,9 +51,7 @@
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
-      "styles": [
-        "app/sites/assets/css/styles.scss"
-      ],
+      "styles": ["app/sites/assets/css/styles.scss"],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {

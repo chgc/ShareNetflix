@@ -8,4 +8,6 @@ export interface Video {
   numSeasonsLabel: string;
   summary: string;
   title: string;
+  likes: number;
+  genres: number[];
 }
