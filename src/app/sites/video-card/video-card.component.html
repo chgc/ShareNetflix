@@ -12,7 +12,7 @@
       {{ video?.runtime | time }}
     </h6>
     <p class="card-text">
-      <span class="badge badge-pill badge-primary" *ngFor="let item of video.genresDisplay">
+      <span class="badge badge-pill badge-primary" *ngFor="let item of video.genresDisplay" (click)="setFilter(item)">
         {{ item.name }}
       </span>
     </p>

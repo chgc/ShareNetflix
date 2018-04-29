@@ -18,8 +18,7 @@ export class AppComponent implements OnInit {
     .get('assets/data.json')
     .pipe(map(data => data['genres']), shareReplay());
 
-  genres: GenresDisplay[];
-
+  private genresSet = new Set();
   constructor(private db: AngularFirestore, private http: HttpClient) {}
 
   ngOnInit() {
@@ -28,6 +27,14 @@ export class AppComponent implements OnInit {
 
   trackByFn(index, item: Video) {
     return item.id;
+  }
+
+  genreFilter(genre) {
+    this.genresSet.add(genre);
+  }
+
+  get genres() {
+    return Array.from(this.genresSet);
   }
 
   private initDataset() {
