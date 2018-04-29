@@ -31,8 +31,12 @@ window.addEventListener(
           runtime: runtime,
           releaseYear: releaseYear,
           bgImages: bgImages,
-          genres: genres
+          genres: {}
         };
+
+        genres.forEach(key => {
+          result.genres[key] = true;
+        });
       }
       return result;
     }
