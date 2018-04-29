@@ -10,6 +10,7 @@ exports.autoLikes = functions.firestore.document('videoDetails/{videoId}/shareBy
 
   return videoRef.get().then((doc) => {
     const likes = doc.get('likes') || 0;
+    const genres = doc.get('genres');
     const data = {
       likes: likes + 1
     }
