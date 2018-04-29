@@ -9,7 +9,7 @@ import memo from 'memo-decorator';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: []
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   videoCollections: AngularFirestoreCollection<Video>;
@@ -31,6 +31,10 @@ export class AppComponent implements OnInit {
 
   genreFilter(genre) {
     this.genresSet.add(genre);
+  }
+
+  removeFilter(genre) {
+    this.genresSet.delete(genre);
   }
 
   get genres() {
