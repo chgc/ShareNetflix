@@ -4,7 +4,7 @@
   "manifest_version": 2,
   "name": "ShareNetflix",
   "description": "Share your favor Netflix",
-  "version": "0.2",
+  "version": "0.3.1",
   "page_action": {
     "default_icon": "assets/network.png",
     "default_popup": "index.html"

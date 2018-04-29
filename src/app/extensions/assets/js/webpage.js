@@ -12,11 +12,13 @@ window.addEventListener(
         runtime = titleVideo['runtime'].value || 0,
         releaseYear = titleVideo['releaseYear'].value || 0,
         genres = [];
+      const genresCount = Object.values(titleVideo['genres']).filter(item => Array.isArray(item)).length;
       if (titleVideo['BGImages'][480]['webp']) {
         bgImages = titleVideo['BGImages'][480]['webp'][0].url || '';
       }
-      for (let i = 0; i < titleVideo['genres'].size.value; ++i) {
-        genres.push(+titleVideo['genres'][i][1])
+
+      for (let i = 0; i < genresCount; ++i) {
+        genres.push(+titleVideo['genres'][i][1]);
       }
       if (titleVideo && titleVideo.title) {
         result = {
