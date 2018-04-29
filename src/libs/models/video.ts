@@ -10,4 +10,10 @@ export interface Video {
   title: string;
   likes: number;
   genres: number[];
+  genresDisplay: GenresDisplay[];
+}
+
+export interface GenresDisplay {
+  id: string;
+  name: string;
 }

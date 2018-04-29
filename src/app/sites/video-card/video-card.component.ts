@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Video } from '@models/video';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-video-card',
