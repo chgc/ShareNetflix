@@ -33,8 +33,9 @@ export class VideoStoreService {
   }
 
   addGenreFilter(genre) {
-    this.genresSet.add(genre);
-    this.genres$.next(this.genres);
+    if (this.genresSet.size !== this.genresSet.add(genre).size) {
+      this.genres$.next(this.genres);
+    }
   }
 
   removeGenreFilter(genre) {
