@@ -8,6 +8,11 @@
           <app-video-card [video]="video" (filter)="genreFilter($event)"></app-video-card>
         </div>
       </div>
+      <div class="row" *ngIf="(videos$ | async).length > 0">
+        <div class="col-12">
+          <button class="btn btn-outline-primary btn-block" (click)="loadMore()" [disabled]="loadMoreDisable">Load More</button>
+        </div>
+      </div>
     </div>
   </div>
 </main>
