@@ -1,16 +1,16 @@
-<app-header [genres]="genres" (remove)="removeFilter($event)"></app-header>
+<app-header [genres]="genres | async" (remove)="removeGenreFilter($event)"></app-header>
 
 <main role="main">
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row">
         <div class="col-md-4" *ngFor="let video of videos$ | async; trackBy: trackByFn">
-          <app-video-card [video]="video" (filter)="genreFilter($event)"></app-video-card>
+          <app-video-card [video]="video" (filter)="addGenreFilter($event)"></app-video-card>
         </div>
       </div>
       <div class="row" *ngIf="(videos$ | async).length > 0">
         <div class="col-12">
-          <button class="btn btn-outline-primary btn-block" (click)="loadMore()" [disabled]="loadMoreDisable">Load More</button>
+          <button class="btn btn-outline-primary btn-block" (click)="loadMore()" [disabled]="canLoadMore | async">Load More</button>
         </div>
       </div>
     </div>

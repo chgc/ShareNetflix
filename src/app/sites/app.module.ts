@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { VideoCardComponent } from './video-card/video-card.component';
+import { VideoStoreService } from '@sites/video-store.service';
 
 @NgModule({
   declarations: [AppComponent, VideoCardComponent, HeaderComponent],
@@ -28,6 +29,7 @@ import { VideoCardComponent } from './video-card/video-card.component';
     LazyLoadImageModule,
     SharedModule
   ],
+  providers: [VideoStoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
