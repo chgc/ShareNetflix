@@ -27,12 +27,7 @@ export class VideoStoreService {
     this.searchDiffer = this.differs.find(this.genres).create();
     this.initDataset();
     this.videos$ = this.data$.pipe(
-      scan((acc: Video[], value: { data; needReset }) => {
-        if (value.needReset) {
-          return [...value.data];
-        }
-        return [...acc, ...value.data];
-      }, []),
+      scan((acc: Video[], value: { data; needReset }) => value.needReset ? [...value.data] : [...acc, ...value.data], []),
       shareReplay()
     );
   }
