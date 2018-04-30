@@ -17,7 +17,7 @@ export class VideoStoreService {
     .pipe(map(data => data['genres']), shareReplay());
   private searchDiffer: KeyValueDiffer<any, any>;
   private query = {
-    limit: 9
+    limit: 30
   };
   private data = new BehaviorSubject({ data: [], needReset: false });
   private more = new BehaviorSubject(false);
