@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
   videos$ = this.videoStore.videos$;
-  genres = this.videoStore.genres$;
-  canLoadMore = this.videoStore.canLoadMore$;
+  genres$ = this.videoStore.genres$;
+  canLoadMore$ = this.videoStore.canLoadMore$;
   constructor(public videoStore: VideoStoreService) {}
 
   trackByFn(index, item: Video) {

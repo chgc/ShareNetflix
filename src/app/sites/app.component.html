@@ -1,4 +1,4 @@
-<app-header [genres]="genres | async" (remove)="removeGenreFilter($event)"></app-header>
+<app-header [genres]="genres$ | async" (remove)="removeGenreFilter($event)"></app-header>
 
 <main role="main">
   <div class="album py-5 bg-light">
@@ -10,7 +10,7 @@
       </div>
       <div class="row" *ngIf="(videos$ | async).length > 0">
         <div class="col-12">
-          <button class="btn btn-outline-primary btn-block" (click)="loadMore()" [disabled]="canLoadMore | async">Load More</button>
+          <button class="btn btn-outline-primary btn-block" (click)="loadMore()" [disabled]="canLoadMore$ | async">Load More</button>
         </div>
       </div>
     </div>
