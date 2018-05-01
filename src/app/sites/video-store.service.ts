@@ -19,27 +19,23 @@ export class VideoStoreService {
   private query = {
     limit: 30
   };
-  private data = new BehaviorSubject({ data: [], needReset: false });
-  private more = new BehaviorSubject(false);
+  private data$ = new BehaviorSubject({ data: [], needReset: false });
+  private more$ = new BehaviorSubject(false);
   private genresSet = new Set();
 
   constructor(private differs: KeyValueDiffers, private db: AngularFirestore, private http: HttpClient) {
     this.searchDiffer = this.differs.find(this.genres).create();
     this.initDataset();
-    this.videos$ = this.data.pipe(
-      scan((acc: Video[], value: { data; needReset }) => {
-        if (value.needReset) {
-          return [...value.data];
-        }
-        return [...acc, ...value.data];
-      }, []),
+    this.videos$ = this.data$.pipe(
+      scan((acc: Video[], value: { data; needReset }) => value.needReset ? [...value.data] : [...acc, ...value.data], []),
       shareReplay()
     );
   }
 
   addGenreFilter(genre) {
-    this.genresSet.add(genre);
-    this.genres$.next(this.genres);
+    if (this.genresSet.size !== this.genresSet.add(genre).size) {
+      this.genres$.next(this.genres);
+    }
   }
 
   removeGenreFilter(genre) {
@@ -48,13 +44,13 @@ export class VideoStoreService {
   }
 
   loadMore() {
-    this.more.next(true);
+    this.more$.next(true);
   }
 
   private initDataset() {
     let needReset = false;
     let cursor = null;
-    combineLatest(this.genres$, this.more)
+    combineLatest(this.genres$, this.more$)
       .pipe(
         switchMap(([filters, more]) => {
           needReset = this.searchDiffer.diff(filters) !== null ? true : false;
@@ -70,7 +66,7 @@ export class VideoStoreService {
         tap(videos => {
           cursor = videos.length === 0 ? null : cursor;
           this.canLoadMore$.next(videos.length < this.query.limit);
-          this.data.next({ data: videos, needReset });
+          this.data$.next({ data: videos, needReset });
           needReset = false;
         })
       )

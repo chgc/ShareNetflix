@@ -10,9 +10,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve:site": "ng serve --app=sites --aot",
-    "serve:extesion": "ng serve --app=extensions --aot",
-    "build:extension": "ng build -app=extensions --prod",
-    "build:site": "ng build -app=sites --prod"
+    "serve:extension": "ng serve --app=extensions --aot",
+    "build:site": "ng build -app=sites --prod",
+    "build:extension": "ng build -app=extensions --prod"
   },
   "private": true,
   "dependencies": {
