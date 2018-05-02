@@ -6,10 +6,10 @@ import { AuthService } from '@libs/core/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   constructor(private authService: AuthService) {}
 
-  ngOnInit() {
-    this.authService.signInAnonymously();
+  socialLogin(loginProvider) {
+    this.authService.signInWithSocial(loginProvider);
   }
 }

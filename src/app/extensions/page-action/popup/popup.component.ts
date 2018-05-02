@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Comment, ShareDetails, Shared } from '@models/shareDetails';
 import { Video } from '@models/video';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Subject ,  combineLatest } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { environment } from '@environment';
 import { AuthService } from '@libs/core/auth.service';
@@ -42,7 +42,9 @@ export class PopupComponent implements OnInit, OnDestroy {
     private authService: AuthService
   ) {
     this.authService.authState.subscribe(user => {
-      this.uid = user.uid;
+      if (user) {
+        this.uid = user.uid;
+      }
     });
   }
 
