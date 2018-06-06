@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject ,  bindCallback } from 'rxjs';
+import { Subject, bindCallback } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 @Component({
@@ -10,11 +10,18 @@ export class BackgroundComponent implements OnInit {
   getTab$ = bindCallback(chrome.tabs.get);
   tabId$ = new Subject<number>();
   ngOnInit() {
-    chrome.tabs.onActivated.addListener(this.checkPageActionState.bind(this, 'activated'));
-    chrome.tabs.onUpdated.addListener(this.checkPageActionState.bind(this, 'updated'));
+    chrome.tabs.onActivated.addListener(
+      this.checkPageActionState.bind(this, 'activated')
+    );
+    chrome.tabs.onUpdated.addListener(
+      this.checkPageActionState.bind(this, 'updated')
+    );
 
     this.tabId$.pipe(mergeMap(id => this.getTab$(id))).subscribe(tabInfo => {
-      if (tabInfo && tabInfo.url.match(/www\.netflix\.com\/(title|watch)\/\d+/)) {
+      if (
+        (tabInfo && tabInfo.url.match(/www\.netflix\.com\/title\/\d+/)) ||
+        tabInfo.url.match(/jbv/)
+      ) {
         chrome.pageAction.show(tabInfo.id);
       } else {
         chrome.pageAction.hide(tabInfo.id);

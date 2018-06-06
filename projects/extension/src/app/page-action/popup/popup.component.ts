@@ -1,7 +1,10 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Comment, ShareDetails, Shared } from '@models/shareDetails';
 import { Video } from '@models/video';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+import {
+  AngularFirestore,
+  AngularFirestoreDocument
+} from 'angularfire2/firestore';
 import { Subject, combineLatest } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -11,8 +14,10 @@ import { EventPageService } from '../event-page.service';
 const mockData = {
   id: '80178687',
   title: '黑閃電',
-  summary: '家人遭到一幫歹徒威脅後，學校校長兼收山的超級英雄傑弗森·皮爾斯再次迅速行動，化身為傳奇人物黑閃電。',
-  bgImages: 'https://occ-0-1077-2219.1.nflxso.net/art/85c06/94902a1fbfac64496b110ce690fab014e8185c06.webp',
+  summary:
+    '家人遭到一幫歹徒威脅後，學校校長兼收山的超級英雄傑弗森·皮爾斯再次迅速行動，化身為傳奇人物黑閃電。',
+  bgImages:
+    'https://occ-0-1077-2219.1.nflxso.net/art/85c06/94902a1fbfac64496b110ce690fab014e8185c06.webp',
   releaseYear: 2018,
   episode: 11,
   session: 1,
@@ -62,7 +67,9 @@ export class PopupComponent implements OnInit, OnDestroy {
 
     if (!this.isShared) {
       // 分享影片資訊
-      this.db.doc<Video>(`videos/${this.video.id}`).set(postData, { merge: true });
+      this.db
+        .doc<Video>(`videos/${this.video.id}`)
+        .set(postData, { merge: true });
       // 分享時間記錄
       this.videoDetailDocument
         .collection('shareBy')
@@ -75,15 +82,22 @@ export class PopupComponent implements OnInit, OnDestroy {
       this.videoDetailDocument
         .collection('comments')
         .doc(this.uid)
-        .set({ comment: this.comment, updateDate: new Date() }, { merge: true });
+        .set(
+          { comment: this.comment, updateDate: new Date() },
+          { merge: true }
+        );
     }
   }
 
   private initFirebaseDocument(video) {
-    this.videoDetailDocument = this.db.doc<ShareDetails>(`videoDetails/${video.id}`);
+    this.videoDetailDocument = this.db.doc<ShareDetails>(
+      `videoDetails/${video.id}`
+    );
 
     combineLatest(
-      this.videoDetailDocument.collection('shareBy', ref => ref.where('uid', '==', this.uid)).valueChanges(),
+      this.videoDetailDocument
+        .collection('shareBy', ref => ref.where('uid', '==', this.uid))
+        .valueChanges(),
       this.videoDetailDocument
         .collection('comments')
         .doc(this.uid)
@@ -92,7 +106,10 @@ export class PopupComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((ds: [Shared[], Comment]) => {
-          return { shared: ds[0].length > 0, comment: (ds[1] && ds[1].comment) || '' };
+          return {
+            shared: ds[0].length > 0,
+            comment: (ds[1] && ds[1].comment) || ''
+          };
         })
       )
       .subscribe(({ shared, comment }) => {
@@ -122,7 +139,10 @@ export class PopupComponent implements OnInit, OnDestroy {
     if (this.eventPageService.queryTabs !== undefined) {
       this.eventPageService.queryTabs.subscribe(tabs => {
         tabs.forEach(tab => {
-          if (tab.url && tab.url.match(/www\.netflix\.com\/(title|watch)\/\d+/)) {
+          if (
+            (tab.url && tab.url.match(/www\.netflix\.com\/title\/\d+/)) ||
+            tab.url.match(/jbv/)
+          ) {
             chrome.tabs.sendMessage(tab.id, { action: 'GET_RESULT' });
           }
         });

@@ -10,11 +10,8 @@
   <mat-card class="example-card">
     <img mat-card-image [src]="video?.bgImages" [alt]="video?.title">
     <mat-card-content>
-      <h5 *ngIf="video?.runtime ==0">
-        {{ video?.numSeasonsLabel }} - {{ video?.episode }} 集
-      </h5>
-      <h5 *ngIf="video?.runtime > 0">
-        {{ video?.runtime | time }}
+      <h5>
+        {{ video?.duration }}
       </h5>
       <p>
         {{ video?.summary}}

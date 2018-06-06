@@ -2,33 +2,60 @@ console.log('webpagejs loaded');
 window.addEventListener(
   'GET_RESULT',
   event => {
-    function getTitleInfo(netflix, titleId) {
+    function getTitleInfo(videoDocument, titleId) {
       let result = {};
-      const titleVideo = netflix.falkorCache['videos'][titleId];
       let bgImages = '',
-        session = titleVideo['seasonCount'].value || 0,
-        numSeasonsLabel = titleVideo['numSeasonsLabel'].value || '',
-        episode = titleVideo['episodeCount'].value || 0,
-        runtime = titleVideo['runtime'].value || 0,
-        releaseYear = titleVideo['releaseYear'].value || 0,
+        title = '',
+        summary = '',
+        duration = '',
+        releaseYear = '',
         genres = [];
-      const genresCount = Object.values(titleVideo['genres']).filter(item => Array.isArray(item)).length;
-      if (titleVideo['BGImages'][480]['webp']) {
-        bgImages = titleVideo['BGImages'][480]['webp'][0].url || '';
+
+      const ngImagesElement =
+        videoDocument.querySelector('.image-rotator-image') ||
+        videoDocument.querySelector('.fullbleed-bg');
+      if (ngImagesElement) {
+        bgImages = ngImagesElement.style.backgroundImage
+          .match(/\((.*?)\)/)[1]
+          .replace(/('|")/g, '');
       }
 
-      for (let i = 0; i < genresCount; ++i) {
-        genres.push(+titleVideo['genres'][i][1]);
+      if (videoDocument.querySelector('.title .logo')) {
+        title = videoDocument.querySelector('.title .logo').alt;
       }
-      if (titleVideo && titleVideo.title) {
+
+      if (videoDocument.querySelector('.title .text')) {
+        title = videoDocument.querySelector('.title .text').innerText;
+      }
+
+      if (videoDocument.querySelector('.synopsis')) {
+        summary = videoDocument.querySelector('.synopsis').innerText;
+      }
+
+      if (videoDocument.querySelector('.duration')) {
+        duration = videoDocument.querySelector('.duration').innerText;
+      }
+
+      if (videoDocument.querySelector('.year')) {
+        releaseYear = videoDocument.querySelector('.year').innerText;
+      }
+
+      if (videoDocument.querySelector('.genres .list-items')) {
+        genres = Array.from(
+          videoDocument
+            .querySelector('.genres > .list-items')
+            .querySelectorAll('a')
+        ).map(item => {
+          return item.href.split('/').pop();
+        });
+      }
+
+      if (title) {
         result = {
           id: titleId,
-          title: titleVideo.title.value,
-          summary: titleVideo.regularSynopsis.value,
-          session: session,
-          numSeasonsLabel: numSeasonsLabel,
-          episode: episode,
-          runtime: runtime,
+          title: title,
+          summary: summary,
+          duration: duration,
           releaseYear: releaseYear,
           bgImages: bgImages,
           genres: {}
@@ -43,21 +70,18 @@ window.addEventListener(
 
     const pathName = window.location.pathname;
     let result = {};
-    if (window['netflix']) {
-      let titleId;
-      if (pathName.indexOf('watch') > -1) {
-        const videoId = pathName.split('/').pop();
-        const watchVideo = window['netflix']['falkorCache']['videos'][videoId];
-        if (watchVideo['ancestor']) {
-          titleId = watchVideo['ancestor'][1];
-        }
+    let titleId;
+    let videoDocument = document.querySelector('.jawBoneFadeInPlaceContainer');
+    if (!videoDocument && pathName.indexOf('title') > -1) {
+      titleId = pathName.split('/').pop();
+      videoDocument = document.querySelector(`[id="${titleId}"]`);
+    } else {
+      if (videoDocument) {
+        titleId = videoDocument.querySelector('.jawBoneContainer').id;
       }
-      if (pathName.indexOf('title') > -1) {
-        titleId = pathName.split('/').pop();
-      }
-      if (titleId) {
-        result = getTitleInfo(window['netflix'], titleId);
-      }
+    }
+    if (videoDocument) {
+      result = getTitleInfo(videoDocument, titleId);
     }
     //You can also use dispatchEvent
     window.postMessage({ action: 'GOT_RESULT', payload: result }, '*');
