@@ -1,0 +1,12 @@
+header {
+  background-color: #f8f9fa;
+  padding-bottom: 10px;
+}
+
+.genres-panel .badge + .badge {
+  margin-left: 6px;
+}
+
+form {
+  width: 31.5%;
+}

@@ -1,0 +1,28 @@
+<div class="card mb-4 box-shadow">
+  <img class="card-img-top" [lazyLoad]="video.bgImages">
+  <div class="card-body">
+    <h5 class="card-title">{{ video.title }} ({{ video?.releaseYear }})
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted">
+      <span class="sr-only">推薦次數</span>
+      <span class="badge badge-light badge-right">{{ video.likes }} 人推薦</span>
+    </h6>
+    <h6 class="card-subtitle mb-2 text-muted">
+      {{ video?.duration }}
+    </h6>
+    <p class="card-text">
+      <span class="badge badge-pill badge-primary hand" *ngFor="let item of video.genresDisplay" (click)="setFilter(item)">
+        {{ item.name }}
+      </span>
+    </p>
+    <p class="card-text">
+      {{ video.summary }}
+    </p>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="goto(video.id)">View
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
