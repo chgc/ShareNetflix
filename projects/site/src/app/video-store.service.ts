@@ -2,10 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, KeyValueDiffer, KeyValueDiffers } from '@angular/core';
 import { GenresDisplay, Video } from '@models/video';
 import { AngularFirestore } from 'angularfire2/firestore';
-import * as firebase from 'firebase/app';
+import { CollectionReference, Query } from '@firebase/firestore-types';
 import memo from 'memo-decorator';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map, mergeMap, scan, shareReplay, switchMap, tap } from 'rxjs/operators';
+import {
+  map,
+  mergeMap,
+  scan,
+  shareReplay,
+  switchMap,
+  tap
+} from 'rxjs/operators';
 
 @Injectable()
 export class VideoStoreService {
@@ -14,7 +21,10 @@ export class VideoStoreService {
   canLoadMore$ = new BehaviorSubject(true);
   private genresDB$: Observable<GenresDisplay[]> = this.http
     .get('assets/data.json')
-    .pipe(map(data => data['genres']), shareReplay());
+    .pipe(
+      map(data => data['genres']),
+      shareReplay()
+    );
   private searchDiffer: KeyValueDiffer<any, any>;
   private query = {
     limit: 30
@@ -23,11 +33,19 @@ export class VideoStoreService {
   private more$ = new BehaviorSubject(false);
   private genresSet = new Set();
 
-  constructor(private differs: KeyValueDiffers, private db: AngularFirestore, private http: HttpClient) {
+  constructor(
+    private differs: KeyValueDiffers,
+    private db: AngularFirestore,
+    private http: HttpClient
+  ) {
     this.searchDiffer = this.differs.find(this.genres).create();
     this.initDataset();
     this.videos$ = this.data$.pipe(
-      scan((acc: Video[], value: { data; needReset }) => value.needReset ? [...value.data] : [...acc, ...value.data], []),
+      scan(
+        (acc: Video[], value: { data; needReset }) =>
+          value.needReset ? [...value.data] : [...acc, ...value.data],
+        []
+      ),
       shareReplay()
     );
   }
@@ -62,7 +80,12 @@ export class VideoStoreService {
           });
           return this.addAdditionProperty(videos);
         }),
-        map(videos => videos.sort((a: Video, b: Video) => (a.likes > b.likes ? -1 : a.likes < b.likes ? 1 : 0))),
+        map(videos =>
+          videos.sort(
+            (a: Video, b: Video) =>
+              a.likes > b.likes ? -1 : a.likes < b.likes ? 1 : 0
+          )
+        ),
         tap(videos => {
           cursor = videos.length === 0 ? null : cursor;
           this.canLoadMore$.next(videos.length < this.query.limit);
@@ -76,7 +99,7 @@ export class VideoStoreService {
   private queryFirebase(filters, more, needReset, cursor) {
     return this.db
       .collection<Video>('videos', ref => {
-        let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+        let query: CollectionReference | Query = ref;
 
         filters.forEach(genre => {
           query = query.where(`genres.${genre.id}`, '==', true);

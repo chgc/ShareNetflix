@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth, AngularFireAuthProvider } from 'angularfire2/auth';
-import * as firebase from 'firebase/app';
-import { User } from '@firebase/auth-types';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { firebase } from '@firebase/app';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class AuthService {
@@ -27,7 +25,10 @@ export class AuthService {
     if (!provider) {
       return;
     }
-    if (firebase.auth().currentUser !== null && firebase.auth().currentUser.isAnonymous === true) {
+    if (
+      firebase.auth().currentUser !== null &&
+      firebase.auth().currentUser.isAnonymous === true
+    ) {
       firebase
         .auth()
         .currentUser.linkWithPopup(provider)
